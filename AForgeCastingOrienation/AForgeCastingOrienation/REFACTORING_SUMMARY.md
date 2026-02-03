@@ -1,7 +1,7 @@
 # Form1.cs Comprehensive Refactoring Summary
 
 ## Overview
-Successfully refactored Form1.cs from 981 lines to 938 lines (43 lines reduced, 4.4% reduction).
+Successfully refactored Form1.cs from 981 lines to 951 lines (30 lines reduced, 3.1% reduction).
 All functionality preserved while improving code quality, maintainability, and following C# best practices.
 
 ## Completed Requirements
@@ -52,10 +52,12 @@ Refactored into smaller focused methods:
 - `DrawDetectedShapes()` - Draws shapes on image
 
 ### 5. ✅ Async/Threading
-- Converted `FindShapes()` to `async Task<Bitmap>`
+- Converted `FindShapes()` to `async Task` (no longer returns Bitmap)
+- Created `FindShapesAsync()` wrapper for fire-and-forget pattern from synchronous event handler
 - Replaced `Thread.Sleep(300)` with `await Task.Delay(SHAPE_ROTATION_DELAY_MS)`
 - No longer blocks UI thread during shape detection
 - Proper async/await pattern throughout
+- Uses discard operator `_` to explicitly indicate fire-and-forget async call
 
 ### 6. ✅ Resource Disposal
 Comprehensive resource management using `using` statements:
@@ -185,9 +187,9 @@ The refactored file is organized into logical regions:
 ## File Comparison
 
 - Original: 981 lines
-- Refactored: 938 lines
-- Lines removed: 43 (dead code, comments, empty handlers)
-- Lines added: 0 (net reduction through efficiency)
+- Refactored: 951 lines
+- Lines removed: 30 (dead code, comments, empty handlers)
+- Lines added: Additional helper methods for better organization
 - Complexity reduced significantly through method extraction
 
 ## Notes

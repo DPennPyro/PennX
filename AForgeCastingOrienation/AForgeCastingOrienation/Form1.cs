@@ -348,7 +348,7 @@ namespace AForgeCastingOrienation
 
                 if (findShapes)
                 {
-                    tmpImg = FindShapes(tmpImg, ref tmpImg2).Result;
+                    _ = FindShapesAsync(tmpImg, tmpImg2);
                 }
                 else
                 {
@@ -623,9 +623,24 @@ namespace AForgeCastingOrienation
         }
 
         /// <summary>
+        /// Asynchronous wrapper for FindShapes that handles fire-and-forget pattern
+        /// </summary>
+        private async Task FindShapesAsync(Bitmap img, Bitmap MarkedImg)
+        {
+            try
+            {
+                await FindShapes(img, MarkedImg);
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.LogError("Error in FindShapesAsync", ex);
+            }
+        }
+
+        /// <summary>
         /// Detects and highlights shapes in the image by rotating and analyzing blobs
         /// </summary>
-        private async Task<Bitmap> FindShapes(Bitmap img, ref Bitmap MarkedImg)
+        private async Task FindShapes(Bitmap img, Bitmap MarkedImg)
         {
             Blob[] Mblobs = new Blob[0];
 
@@ -638,8 +653,6 @@ namespace AForgeCastingOrienation
                 pbCapture.Image = img;
                 pbShapes.Image = MarkedImg;
             }
-
-            return img;
         }
 
         /// <summary>
